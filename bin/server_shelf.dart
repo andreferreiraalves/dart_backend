@@ -1,16 +1,13 @@
 import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart' as shelf_io;
 
-import 'server_handle.dart';
+import 'api/blog_api.dart';
+import 'api/login_api.dart';
+import 'infra/custom_server.dart';
 
 void main() async {
-  final _server = ServerHandle();
+  final cascadeHandler = Cascade().add(LoginApi().handler).add(BlogApi().handler).handler;
 
-  final server = await shelf_io.serve(
-    _server.handler,
-    'localhost',
-    3000,
-  );
+  final handler = Pipeline().addMiddleware(logRequests()).addHandler(cascadeHandler);
 
-  print('Server running http://localhost:3000');
+  await CustomServer().initialize(handler);
 }
