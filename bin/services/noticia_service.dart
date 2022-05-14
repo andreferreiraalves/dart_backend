@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import '../models/noticia_model.dart';
 import 'generic_service.dart';
 
@@ -22,7 +23,7 @@ class NoticiaService implements GenericService<NoticiaModel> {
 
   @override
   bool save(NoticiaModel value) {
-    NoticiaModel? model = _fakeDB.firstWhere((e) => e.id == value.id);
+    var model = _fakeDB.firstWhereOrNull((e) => e.id == value.id);
 
     if (model == null) {
       _fakeDB.add(value);

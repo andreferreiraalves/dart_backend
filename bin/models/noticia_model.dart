@@ -17,11 +17,12 @@ class NoticiaModel {
 
   factory NoticiaModel.fromJson(Map map) {
     return NoticiaModel(
-      map['id'] ?? '',
+      map['id'],
       map['titulo'],
       map['descricao'],
       map['imagem'],
-      DateTime.fromMicrosecondsSinceEpoch(map['dataPublicacao']),
+      // DateTime.fromMicrosecondsSinceEpoch(map['dataPublicacao']),
+      DateTime.parse(map['dataPublicacao']),
       map['dataAtualizacao'] != null ? DateTime.fromMicrosecondsSinceEpoch(map['dataAtualizacao']) : null,
     );
   }
