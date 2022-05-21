@@ -23,6 +23,9 @@ void main() async {
       .addMiddleware(
         MiddlewareInterception().middleware,
       )
+      .addMiddleware(
+        SecurityServiceImp().authorization,
+      )
       .addHandler(cascadeHandler);
 
   await CustomServer().initialize(

@@ -13,9 +13,7 @@ class LoginApi {
 
     router.post('/login', (Request req) async {
       var token = await _securityService.generateJWT('1');
-      var ok = await _securityService.validadeJWT('ronaldo');
-
-      return Response.ok((ok != null).toString());
+      return Response.ok(token);
     });
 
     return router;
