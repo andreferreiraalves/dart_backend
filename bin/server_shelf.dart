@@ -15,20 +15,16 @@ void main() async {
   SecurityService _securityService = SecurityServiceImp();
 
   var cascadeHandler = Cascade()
-      .add(LoginApi(SecurityServiceImp()).handler)
-      .add(BlogApi(
-        NoticiaService(),
-      ).handler)
+      .add(LoginApi(SecurityServiceImp()).getHandler())
+      .add(BlogApi(NoticiaService()).getHandler(
+        middleware: [
+          _securityService.authorization,
+          _securityService.verifyJwt,
+        ],
+      ))
       .handler;
 
-  var handler = Pipeline()
-      .addMiddleware(logRequests())
-      .addMiddleware(MiddlewareInterception().middleware)
-      .addMiddleware(_securityService.authorization)
-      .addMiddleware(
-        _securityService.verifyJwt,
-      )
-      .addHandler(cascadeHandler);
+  var handler = Pipeline().addMiddleware(logRequests()).addMiddleware(MiddlewareInterception().middleware).addHandler(cascadeHandler);
 
   await CustomServer().initialize(
     handler: handler,
